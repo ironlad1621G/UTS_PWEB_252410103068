@@ -1,0 +1,150 @@
+/* ===== Tipografi ===== */
+.judul {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.logo-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    letter-spacing: 3px;
+}
+
+/* Ukuran judul besar mengikuti lebar layar */
+.judul-login { font-size: 18vw; line-height: 1; }
+.judul-raksasa { font-size: 23.6vw; line-height: 1.06; }
+.judul-menu { font-size: 18vw; line-height: 1.05; }
+.judul-profil { font-size: 20vw; line-height: 1.05; }
+
+@media (min-width: 1024px) {
+    .judul-login { font-size: min(12.2vw, 176px); }
+    .judul-raksasa { font-size: min(23.6vw, 340px); }
+    .judul-menu { font-size: min(11.67vw, 168px); }
+    .judul-profil { font-size: min(13.2vw, 190px); }
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 2px solid #fafafa;
+    outline-offset: 2px;
+}
+
+/* ===== Ombak yang terus mengalir ===== */
+.ombak {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 32px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ombak svg {
+    display: block;
+    width: 200%;
+    height: 100%;
+    fill: #10b981;
+    animation: alir 8s linear infinite;
+}
+
+/* SVG lebarnya 200%, jadi geser 50% membuat ombak mengulang tanpa terlihat putus */
+@keyframes alir {
+    to { transform: translateX(-50%); }
+}
+
+.ombak.atas { bottom: calc(100% - 1px); }
+.ombak.bawah { top: calc(100% - 1px); transform: scaleY(-1); }
+
+/* Ombak di sisi kanan blok hijau, hanya di layar lebar */
+.ombak.kanan {
+    display: none;
+    top: 0;
+    left: calc(100% + 32px);
+    width: 120vh;
+    transform-origin: 0 0;
+    transform: rotate(90deg);
+}
+
+@media (min-width: 1024px) {
+    .ombak.kanan { display: block; }
+}
+
+/* ===== Transisi cairan saat pindah halaman ===== */
+.cairan {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: #10b981;
+    pointer-events: none;
+    animation: cairan-keluar 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+.cairan .ombak { height: 80px; }
+.cairan .ombak svg { animation-duration: 1.4s; }
+
+.cairan.masuk {
+    animation: cairan-masuk 0.6s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes cairan-keluar {
+    from { transform: translateY(0); }
+    to { transform: translateY(-130%); }
+}
+
+@keyframes cairan-masuk {
+    from { transform: translateY(130%); }
+    to { transform: translateY(0); }
+}
+
+/* ===== Elemen muncul halus saat terlihat di layar ===== */
+.muncul {
+    transition:
+        opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--jeda, 0ms),
+        transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--jeda, 0ms),
+        background-color 0.3s ease;
+}
+
+.js .muncul:not(.terlihat) {
+    opacity: 0;
+    transform: translateY(48px);
+}
+
+/* Batang anggaran terisi dari kiri ke kanan */
+.isi-batang {
+    transition: clip-path 1.6s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.js .batang:not(.terlihat) .isi-batang {
+    clip-path: inset(0 100% 0 0);
+}
+
+/* ===== Interaksi saat kursor lewat ===== */
+.baris .hari {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.baris:hover .hari {
+    transform: translateX(12px);
+}
+
+/* Warna putih mengalir mengisi tombol */
+.tombol-cair {
+    background-image: linear-gradient(#fafafa, #fafafa);
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: 0% 100%;
+    transition: background-size 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+.tombol-cair:hover {
+    background-size: 100% 100%;
+}
+
+/* Matikan animasi untuk pengguna yang memilih mengurangi gerakan */
+@media (prefers-reduced-motion: reduce) {
+    .cairan { display: none; }
+    .ombak svg { animation: none; }
+    .js .muncul:not(.terlihat) { opacity: 1; transform: none; }
+    .js .batang:not(.terlihat) .isi-batang { clip-path: none; }
+}
