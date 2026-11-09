@@ -2,8 +2,8 @@
     "version": 2,
     "framework": null,
     "installCommand": "echo Tidak perlu npm install",
-    "buildCommand": "echo Tidak perlu build",
-    "outputDirectory": "public",
+    "buildCommand": "mkdir -p dist && cp -r public/css public/js public/favicon.ico dist/",
+    "outputDirectory": "dist",
     "functions": {
         "api/index.php": {
             "runtime": "vercel-php@0.9.0"
